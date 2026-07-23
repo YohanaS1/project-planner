@@ -9,16 +9,17 @@ if 'projects' not in st.session_state:
     st.session_state['projects']=[]
 #creating colums for metrics
 col1, col2, col3, col4 = st.columns(4)
+
 #project submit form
 with st.form(key = "Add Project", clear_on_submit=True):
     project_name = st.text_input("Project Name")
     submitted = st.form_submit_button("Submit")
     if submitted:
-        if(project_name != ""):
+        if(project_name != "" and project_name not in st.session_state.projects):
             st.success(f"Project {project_name} added successfully!")
             st.session_state.projects.append(project_name)
         else:
-            st.warning('Project name cannot be empty!', icon="⚠️")
+            st.warning('Change Project Name. Project name cannot be empty or duplicate', icon="⚠️")
 
 #progress metrics
 total_projects = len(st.session_state.projects)
@@ -36,16 +37,22 @@ counter = 1
 for project in st.session_state.projects:
     if counter ==1:
         with left:
-            container = st.container(border = True)
+            container = st.container(border = True, horizontal = True, horizontal_alignment = "distribute")
             container.write(project)
+            container.button('',key = f"edit_{project}",icon="✏️", icon_position = "right", width = 50)
+            
     elif counter ==2:
         with middle:
-            container = st.container(border = True)
+            container = st.container(border = True, horizontal = True, horizontal_alignment = "distribute")
             container.write(project)
+            container.button('',key = f"edit_{project}",icon="✏️", icon_position = "right", width = 50)
+            
     else:
         with right:
-            container = st.container(border = True)
+            container = st.container(border = True, horizontal = True, horizontal_alignment = "distribute")
             container.write(project)
+            container.button('',key = f"edit_{project}",icon="✏️", icon_position = "right", width = 50)
+            
     counter +=1
     if counter >3:
         counter = 1
