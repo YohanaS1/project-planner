@@ -1,5 +1,6 @@
 
 import streamlit as st
+
 # Header
 st.header("Project Planner")
 st.write("to get started, add a project to the dashboard")
@@ -30,6 +31,9 @@ col1.metric("Total Projects", f"{total_projects}")
 col2.metric("In Progress", f"{in_progress}")
 col3.metric("Overdue", f"{overdue}")
 col4.metric("Completed", f"{completed}")
+# saving selected project to session state
+if 'selected_project' not in st.session_state:
+    st.session_state['selected_project']= "None"
 
 #displaying projects
 left, middle, right = st.columns(3)
@@ -39,25 +43,35 @@ for project in st.session_state.projects:
         with left:
             container = st.container(border = True, horizontal = True, horizontal_alignment = "distribute")
             container.write(project)
-            container.button('',key = f"edit_{project}",icon="✏️", icon_position = "right", width = 50)
+            edit_clicked = container.button('',key = f"edit_{project}",icon="✏️", icon_position = "right", width = 50)
+            # check if edit button is clicked
+            if edit_clicked:
+                st.session_state['selected_project'] = project
+                st.switch_page("pages/project_details.py")
+
             
     elif counter ==2:
         with middle:
             container = st.container(border = True, horizontal = True, horizontal_alignment = "distribute")
             container.write(project)
-            container.button('',key = f"edit_{project}",icon="✏️", icon_position = "right", width = 50)
+            edit_clicked = container.button('',key = f"edit_{project}",icon="✏️", icon_position = "right", width = 50)
+            # check if edit button is clicked
+            if edit_clicked:
+                st.session_state['selected_project'] = project
+                st.switch_page("pages/project_details.py")
             
     else:
         with right:
             container = st.container(border = True, horizontal = True, horizontal_alignment = "distribute")
             container.write(project)
-            container.button('',key = f"edit_{project}",icon="✏️", icon_position = "right", width = 50)
-            
+            edit_clicked = container.button('',key = f"edit_{project}",icon="✏️", icon_position = "right", width = 50)
+            # check if edit button is clicked
+            if edit_clicked:
+                st.session_state['selected_project'] = project
+                st.switch_page("pages/project_details.py")
     counter +=1
     if counter >3:
         counter = 1
-        
-
 
 
         
